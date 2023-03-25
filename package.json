@@ -1,7 +1,7 @@
 {
   "name": "weighted",
   "version": "0.0.1",
-  "description": "",
+  "description": "Dead simple weighted tables",
   "main": "src/index.ts",
   "keywords": [
     "weighted table"
@@ -44,5 +44,7 @@
   },
   "dependencies": {
     "seedrandom": "^3.0.5"
-  }
+  },
+  "repository": "lightradius/weighted",
+  "homepage": "https://github.com/lightradius/weighted"
 }
