@@ -1,7 +1,7 @@
 {
   "name": "weighted",
   "version": "0.0.1",
-  "description": "Dead simple weighted tables",
+  "description": "Typed weighted table",
   "main": "src/index.ts",
   "keywords": [
     "weighted table"
