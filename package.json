@@ -46,6 +46,13 @@
   "dependencies": {
     "seedrandom": "^3.0.5"
   },
-  "repository": "lightradius/weighted",
-  "homepage": "https://github.com/lightradius/weighted"
+  "namespace": "@lrkit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lightradius/weighted.git"
+  },
+  "homepage": "https://github.com/lightradius/weighted",
+  "bugs": {
+    "url": "https://github.com/lightradius/weighted/issues"
+  }
 }
