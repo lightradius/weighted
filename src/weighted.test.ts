@@ -1,3 +1,10 @@
+import {
+  ALL_ITEMS_MUST_BE_WEIGHTED_ITEMS,
+  ALL_WEIGHTS_MUST_BE_GREATER_THAN_ZERO,
+  AT_LEAST_ONE_ITEM_IS_REQUIRED,
+  ITEMS_MUST_BE_AN_ARRAY,
+  SEED_MUST_BE_A_STRING,
+} from "./errors";
 import { createWeightedTable } from "./weighted";
 
 describe("createWeightedTable", () => {
@@ -11,27 +18,79 @@ describe("createWeightedTable", () => {
     expect(pickedItem).toBe("a");
   });
 
+  it("should be able to return another weighted table", () => {
+    const firstWeightedItems = [{ item: "a", weight: 1 }];
+
+    const firstTable = createWeightedTable(firstWeightedItems);
+
+    const secondWeightedItems = [{ item: firstTable, weight: 1 }];
+
+    const secondTable = createWeightedTable(secondWeightedItems);
+
+    const pickedItem = secondTable.pick();
+
+    expect(pickedItem).toBe(firstTable);
+  });
+
   it("should throw an error if items is not an array", () => {
     const weightedItems = {} as [];
 
-    expect(() => createWeightedTable(weightedItems)).toThrowError("Items must be an Array.");
+    expect(() => createWeightedTable(weightedItems)).toThrowError(ITEMS_MUST_BE_AN_ARRAY);
   });
 
   it("should throw an error if items is empty", () => {
-    const weightedItems = [] as [];
+    const weightedItems: [] = [];
 
-    expect(() => createWeightedTable(weightedItems)).toThrowError("At least one item is required to create a weighted table.");
+    expect(() => createWeightedTable(weightedItems)).toThrowError(AT_LEAST_ONE_ITEM_IS_REQUIRED);
   });
 
   it("should throw an error if any weight is invalid or undefined", () => {
     const weightedItems = [{ item: "a", weight: undefined as unknown as number }];
 
-    expect(() => createWeightedTable(weightedItems)).toThrowError("All items must have a corresponding weight.");
+    expect(() => createWeightedTable(weightedItems)).toThrowError(ALL_ITEMS_MUST_BE_WEIGHTED_ITEMS);
   });
 
   it("should throw an error if any weight is not greater than zero", () => {
-    const weightedItems = [{ item: "a", weight: 0 }];
+    const weightedItemsCollection = [[{ item: "a", weight: 0 }], [{ item: "a", weight: -1 }], [{ item: "a", weight: NaN }]];
 
-    expect(() => createWeightedTable(weightedItems)).toThrowError("All weights must be greater than zero.");
+    weightedItemsCollection.forEach((weightedItems) => {
+      expect(() => createWeightedTable(weightedItems)).toThrowError(ALL_WEIGHTS_MUST_BE_GREATER_THAN_ZERO);
+    });
+  });
+
+  it("should throw an error if seed is not a string", () => {
+    const weightedItems = [{ item: "a", weight: 1 }];
+
+    const options = { seed: {} as unknown as string };
+
+    expect(() => createWeightedTable(weightedItems, options)).toThrowError(SEED_MUST_BE_A_STRING);
+  });
+
+  it("should throw an error if seed is not a string", () => {
+    const weightedItems = [
+      { item: "a", weight: 1 },
+      { item: "b", weight: 2 },
+      { item: "c", weight: 3 },
+    ];
+
+    const options = { seed: "seed" }; // random number should always be 3.397084615516376
+
+    const table = createWeightedTable(weightedItems, options);
+
+    const pickedItem = table.pick();
+
+    expect(pickedItem).toBe("c");
+  });
+
+  it("should return the total weight", () => {
+    const weightedItems = [
+      { item: "a", weight: 1 },
+      { item: "b", weight: 2 },
+      { item: "c", weight: 3 },
+    ];
+
+    const table = createWeightedTable(weightedItems);
+
+    expect(table.getTotalWeight()).toBe(6);
   });
 });
