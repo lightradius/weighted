@@ -75,7 +75,7 @@ type WeightedItem<T> = Record<[number, T]>
 
 ### WeightedItem<T>
 
-`WeightedItem<T>` makes it clear that every item requires a corresponding weight, therefore  keeping the weight property tightly coupled to it's corresponding item and eliminating the risk of accidentally passing in an array of items without a corresponding weight.
+`WeightedItem<T>` provides type checking and makes it clear that every item requires a corresponding weight, keeping the weight property tightly coupled to its corresponding item and eliminating the risk of accidentally passing in an array of items without a corresponding weight.
 
 ```typescript
 const weightedItems = [{ item: "a" }];
@@ -83,7 +83,9 @@ const weightedItems = [{ item: "a" }];
 const table = createWeightedTable(weightedItems); // Property 'weight' is missing in type '{ item: string; }' but required in type 'WeightedItem<string>'
 ```
 
-This reduces the risk of errors and makes the code more readable and maintainable.
+It also guarantees that all your items must be of the same type, which, depending on your use case, might look like an advantage or a disadvantage, but if you ever see yourself needing different item types on a weighted table, consider creating more than one table instead. 
+
+Remember: a weighted table can return another weighted table!
 
 ## Contributing
 
