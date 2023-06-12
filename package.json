@@ -1,6 +1,6 @@
 {
   "name": "@lrkit/weighted",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Typed weighted table",
   "main": "src/index.ts",
   "keywords": [
@@ -17,7 +17,6 @@
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",
-    "@types/seedrandom": "^3.0.5",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
     "eslint": "^8.36.0",
@@ -44,6 +43,7 @@
     }
   },
   "dependencies": {
+    "@types/seedrandom": "^3.0.5",
     "seedrandom": "^3.0.5"
   },
   "repository": {

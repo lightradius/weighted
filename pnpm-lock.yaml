@@ -1,10 +1,13 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@types/seedrandom':
+    specifier: ^3.0.5
+    version: 3.0.5
   seedrandom:
     specifier: ^3.0.5
     version: 3.0.5
@@ -13,9 +16,6 @@ devDependencies:
   '@types/jest':
     specifier: ^29.4.0
     version: 29.4.0
-  '@types/seedrandom':
-    specifier: ^3.0.5
-    version: 3.0.5
   '@typescript-eslint/eslint-plugin':
     specifier: ^5.55.0
     version: 5.55.0(@typescript-eslint/parser@5.55.0)(eslint@8.36.0)(typescript@5.0.4)
@@ -856,7 +856,7 @@ packages:
 
   /@types/seedrandom@3.0.5:
     resolution: {integrity: sha512-kopEpYpFQvQdYsZkZVwht/0THHmTFFYXDaqV/lM45eweJ8kcGVDgZHs0RVTolSq55UPZNmjhKc9r7UvLu/mQQg==}
-    dev: true
+    dev: false
 
   /@types/semver@7.3.13:
     resolution: {integrity: sha512-21cFJr9z3g5dW8B0CVI9g2O9beqaThGQ6ZFBqHfwhzLDKUxaqTIy3vnfah/UPkfOiF2pLq+tGz+W8RyCskuslw==}
