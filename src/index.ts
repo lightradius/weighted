@@ -1,5 +1,5 @@
 import { createWeightedTable as weighted } from "./weighted";
 
-import { addWeights } from "./add-weights";
+import { addWeight } from "./add-weight";
 
-export { weighted, addWeights };
+export { weighted, addWeight };

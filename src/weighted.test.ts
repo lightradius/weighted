@@ -1,9 +1,11 @@
 import {
   ALL_ITEMS_MUST_BE_WEIGHTED_ITEMS,
   ALL_WEIGHTS_MUST_BE_GREATER_THAN_ZERO,
+  ALL_WEIGHTS_MUST_BE_NUMBERS,
   AT_LEAST_ONE_ITEM_IS_REQUIRED,
   ITEMS_MUST_BE_AN_ARRAY,
   SEED_MUST_BE_A_STRING,
+  WEIGHTS_CANNOT_BE_NAN,
 } from "./errors";
 import { createWeightedTable } from "./weighted";
 
@@ -44,14 +46,26 @@ describe("createWeightedTable", () => {
     expect(() => createWeightedTable(weightedItems)).toThrowError(AT_LEAST_ONE_ITEM_IS_REQUIRED);
   });
 
-  it("should throw an error if any weight is invalid or undefined", () => {
+  it("should throw an error if any weight undefined", () => {
     const weightedItems = [{ item: "a", weight: undefined as unknown as number }];
 
     expect(() => createWeightedTable(weightedItems)).toThrowError(ALL_ITEMS_MUST_BE_WEIGHTED_ITEMS);
   });
 
+  it("should throw an error if any weight is not a number", () => {
+    const weightedItems = [{ item: "a", weight: {} as unknown as number }];
+
+    expect(() => createWeightedTable(weightedItems)).toThrowError(ALL_WEIGHTS_MUST_BE_NUMBERS);
+  });
+
+  it("should throw an error if any weight is NaN", () => {
+    const weightedItems = [{ item: "a", weight: NaN }];
+
+    expect(() => createWeightedTable(weightedItems)).toThrowError(WEIGHTS_CANNOT_BE_NAN);
+  });
+
   it("should throw an error if any weight is not greater than zero", () => {
-    const weightedItemsCollection = [[{ item: "a", weight: 0 }], [{ item: "a", weight: -1 }], [{ item: "a", weight: NaN }]];
+    const weightedItemsCollection = [[{ item: "a", weight: 0 }], [{ item: "a", weight: -1 }]];
 
     weightedItemsCollection.forEach((weightedItems) => {
       expect(() => createWeightedTable(weightedItems)).toThrowError(ALL_WEIGHTS_MUST_BE_GREATER_THAN_ZERO);
