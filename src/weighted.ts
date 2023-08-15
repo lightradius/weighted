@@ -49,6 +49,7 @@ export const createWeightedTable = <T>(
 
           if (random <= 0) {
             result.push(weightedItem.item);
+            break;
           }
         }
       }

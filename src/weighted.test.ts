@@ -34,7 +34,13 @@ describe("createWeightedTable", () => {
   });
 
   it("should return an array of items if quantity is provided", () => {
-    const weightedItems = [{ item: "a", weight: 1 }];
+    const weightedItems = [
+      { item: "a", weight: 1 },
+      { item: "b", weight: 1 },
+      { item: "c", weight: 1 },
+      { item: "d", weight: 1 },
+      { item: "e", weight: 1 },
+    ];
 
     const quantities = [1, 2, 3];
 
