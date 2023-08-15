@@ -3,7 +3,9 @@ import {
   ALL_WEIGHTS_MUST_BE_GREATER_THAN_ZERO,
   ALL_WEIGHTS_MUST_BE_NUMBERS,
   AT_LEAST_ONE_ITEM_IS_REQUIRED,
+  EXCLUSIVE_MUST_BE_A_BOOLEAN,
   ITEMS_MUST_BE_AN_ARRAY,
+  QUANTITY_MUST_BE_A_NUMBER,
   SEED_MUST_BE_A_STRING,
   WEIGHTS_CANNOT_BE_NAN,
 } from "./errors";
@@ -15,9 +17,49 @@ describe("createWeightedTable", () => {
 
     const table = createWeightedTable(weightedItems);
 
+    expect(table).toStrictEqual({
+      getTotalWeight: expect.any(Function),
+      pick: expect.any(Function),
+    });
+  });
+
+  it("should return a single item by default", () => {
+    const weightedItems = [{ item: "a", weight: 1 }];
+
+    const table = createWeightedTable(weightedItems);
+
     const pickedItem = table.pick();
 
     expect(pickedItem).toBe("a");
+  });
+
+  it("should return an array of items if quantity is provided", () => {
+    const weightedItems = [{ item: "a", weight: 1 }];
+
+    const quantities = [1, 2, 3];
+
+    const table = createWeightedTable(weightedItems);
+
+    for (const quantity of quantities) {
+      const pickedItems = table.pick({
+        quantity,
+      });
+
+      expect(pickedItems).toHaveLength(quantity);
+    }
+  });
+
+  it("should never pick a repeated item if exclusive is set to true", () => {
+    const weightedItems = [{ item: "a", weight: 1 }];
+
+    const table = createWeightedTable(weightedItems);
+
+    const pickedItems = table.pick({
+      quantity: 2,
+      exclusive: true,
+    });
+
+    expect(pickedItems).toStrictEqual(["a"]);
   });
 
   it("should be able to return another weighted table", () => {
@@ -78,6 +120,24 @@ describe("createWeightedTable", () => {
     const options = { seed: {} as unknown as string };
 
     expect(() => createWeightedTable(weightedItems, options)).toThrowError(SEED_MUST_BE_A_STRING);
+  });
+
+  it("should throw an error if quantity is not a number", () => {
+    const weightedItems = [{ item: "a", weight: 1 }];
+
+    const table = createWeightedTable(weightedItems);
+
+    expect(() => table.pick({ quantity: "1" as unknown as number })).toThrowError(QUANTITY_MUST_BE_A_NUMBER);
+  });
+
+  it("should throw an error if exclusive is not a boolean", () => {
+    const weightedItems = [{ item: "a", weight: 1 }];
+
+    const table = createWeightedTable(weightedItems);
+
+    expect(() => table.pick({ quantity: 1, exclusive: "true" as unknown as boolean })).toThrowError(
+      EXCLUSIVE_MUST_BE_A_BOOLEAN,
+    );
   });
 
   it("should throw an error if seed is not a string", () => {

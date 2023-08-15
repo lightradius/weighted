@@ -3,7 +3,9 @@ import {
   ALL_WEIGHTS_MUST_BE_GREATER_THAN_ZERO,
   ALL_WEIGHTS_MUST_BE_NUMBERS,
   AT_LEAST_ONE_ITEM_IS_REQUIRED,
+  EXCLUSIVE_MUST_BE_A_BOOLEAN,
   ITEMS_MUST_BE_AN_ARRAY,
+  QUANTITY_MUST_BE_A_NUMBER,
   SEED_MUST_BE_A_STRING,
   WEIGHTS_CANNOT_BE_NAN,
 } from "./errors";
@@ -11,12 +13,26 @@ import {
 import { WeightedItem } from "./types";
 
 const isWeightedItemArray = <T>(items: WeightedItem<T>[] | T[]): items is WeightedItem<T>[] => {
-  return (items as WeightedItem<T>[]).every((item: WeightedItem<T>) => "item" in item && "weight" in item && typeof item.weight !== "undefined");
+  return (items as WeightedItem<T>[]).every(
+    (item: WeightedItem<T>) => "item" in item && "weight" in item && typeof item.weight !== "undefined",
+  );
 };
 
 export const validateSeed = (seed: string) => {
   if (typeof seed !== "string") {
     throw new Error(SEED_MUST_BE_A_STRING);
+  }
+};
+
+export const validateQuantity = (quantity: number) => {
+  if (typeof quantity !== "number") {
+    throw new Error(QUANTITY_MUST_BE_A_NUMBER);
+  }
+};
+
+export const validateExclusive = (exclusive: boolean) => {
+  if (typeof exclusive !== "boolean") {
+    throw new Error(EXCLUSIVE_MUST_BE_A_BOOLEAN);
   }
 };
 

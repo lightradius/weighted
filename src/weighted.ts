@@ -1,12 +1,15 @@
 import seedrandom from "seedrandom";
-import { Options, WeightedItem, WeightedTable } from "./types";
-import { validateSeed, validateWeightedItems } from "./validation";
+import { PickManyOptions, PickOneOptions, PickOptions, TableOptions, WeightedItem, WeightedTable } from "./types";
+import { validateExclusive, validateQuantity, validateSeed, validateWeightedItems } from "./validation";
 import { FAILED_TO_SELECT_A_WEIGHTED_ITEM } from "./errors";
 
-export const createWeightedTable = <T>(items: WeightedItem<T>[], options: Options = {}): WeightedTable<T> => {
-  validateWeightedItems(items);
+export const createWeightedTable = <T>(
+  weightedItems: WeightedItem<T>[],
+  options: TableOptions = {},
+): WeightedTable<T> => {
+  validateWeightedItems(weightedItems);
 
-  const totalWeight = items.reduce((prev, curr) => prev + curr.weight, 0);
+  const totalWeight = weightedItems.reduce((prev, curr) => prev + curr.weight, 0);
 
   const seed = options?.seed;
 
@@ -16,20 +19,60 @@ export const createWeightedTable = <T>(items: WeightedItem<T>[], options: Option
 
   const rng = seed ? seedrandom(seed) : Math.random;
 
-  return {
-    pick: () => {
-      let random = rng() * totalWeight;
+  /**
+   * forced to use classic function declaration here because TypeScript does not yet support overloaded arrow functions
+   * https://stackoverflow.com/a/76907382/2887078
+   * https://github.com/microsoft/TypeScript/issues/47669
+   */
+  function pick(): T;
+  function pick(options: PickOneOptions): T;
+  function pick(options: PickManyOptions): T[];
+  function pick(options?: PickOptions) {
+    const { quantity, exclusive = false } = options ?? {};
 
-      for (const weightedItem of items) {
-        random -= weightedItem.weight;
+    validateExclusive(exclusive);
 
-        if (random <= 0) {
-          return weightedItem.item;
+    let random = rng() * totalWeight;
+
+    if (quantity) {
+      validateQuantity(quantity);
+
+      const result: T[] = [];
+
+      for (let i = 0; i < quantity; i++) {
+        const validWeightedItems = exclusive
+          ? weightedItems.filter(({ item }) => !result.includes(item))
+          : weightedItems;
+
+        for (const weightedItem of validWeightedItems) {
+          random -= weightedItem.weight;
+
+          if (random <= 0) {
+            result.push(weightedItem.item);
+          }
         }
       }
 
-      throw new Error(FAILED_TO_SELECT_A_WEIGHTED_ITEM); // should never happen
-    },
+      if (!result.length) {
+        throw new Error(FAILED_TO_SELECT_A_WEIGHTED_ITEM); // should never happen
+      }
+
+      return result;
+    }
+
+    for (const weightedItem of weightedItems) {
+      random -= weightedItem.weight;
+
+      if (random <= 0) {
+        return weightedItem.item;
+      }
+    }
+
+    throw new Error(FAILED_TO_SELECT_A_WEIGHTED_ITEM); // should never happen
+  }
+
+  return {
     getTotalWeight: () => totalWeight,
+    pick,
   };
 };

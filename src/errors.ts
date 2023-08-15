@@ -10,6 +10,10 @@ export const ALL_WEIGHTS_MUST_BE_GREATER_THAN_ZERO = "All weights must be greate
 
 export const ALL_ITEMS_MUST_BE_WEIGHTED_ITEMS = "All items must be weighted items.";
 
-export const SEED_MUST_BE_A_STRING = "The seed must be a string.";
+export const SEED_MUST_BE_A_STRING = "'seed' must be a string.";
+
+export const QUANTITY_MUST_BE_A_NUMBER = "'quantity' must be a number.";
+
+export const EXCLUSIVE_MUST_BE_A_BOOLEAN = "'exclusive' must be a boolean.";
 
 export const FAILED_TO_SELECT_A_WEIGHTED_ITEM = "Failed to select a weighted item.";
