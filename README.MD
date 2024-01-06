@@ -74,7 +74,7 @@ const items = [
 
 const table = weighted(items);
 
-const result = table.pick({ quantity: 2 }); // ["a", "b"] or ["a", "c"] or ["b", "c"], but never ["a", "a"] or ["b", "b"] or ["c", "c"]
+const result = table.pick({ quantity: 2, exclusive: true }); // ["a", "b"] or ["a", "c"] or ["b", "c"], but never ["a", "a"] or ["b", "b"] or ["c", "c"]
 
 const result = table.pick({ quantity: 3, exclusive: true }); // guaranteed ["a", "b", "c"]
 ```
