@@ -1,8 +1,7 @@
 {
   "name": "@lrkit/weighted",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Typed weighted table",
-  "main": "src/index.ts",
   "keywords": [
     "weighted table"
   ],
@@ -14,6 +13,16 @@
     "lint": "eslint .",
     "tsc": "tsc -p tsconfig.json --noEmit",
     "test": "jest"
+  },
+  "main": "src/index.ts",
+  "types": "src/types.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types.ts"
+  },
+  "dependencies": {
+    "@types/seedrandom": "^3.0.5",
+    "seedrandom": "^3.0.5"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",
@@ -42,10 +51,6 @@
       "pre-commit": "lint-staged"
     }
   },
-  "dependencies": {
-    "@types/seedrandom": "^3.0.5",
-    "seedrandom": "^3.0.5"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lightradius/weighted.git"
@@ -53,5 +58,6 @@
   "homepage": "https://github.com/lightradius/weighted",
   "bugs": {
     "url": "https://github.com/lightradius/weighted/issues"
-  }
+  },
+  "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab"
 }
