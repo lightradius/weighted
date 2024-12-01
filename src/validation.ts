@@ -4,6 +4,7 @@ import {
   ALL_WEIGHTS_MUST_BE_NUMBERS,
   AT_LEAST_ONE_ITEM_IS_REQUIRED,
   EXCLUSIVE_MUST_BE_A_BOOLEAN,
+  FAILED_TO_SELECT_A_WEIGHTED_ITEM,
   ITEMS_MUST_BE_AN_ARRAY,
   QUANTITY_MUST_BE_A_NUMBER,
   SEED_MUST_BE_A_STRING,
@@ -24,16 +25,20 @@ export const validateSeed = (seed: string) => {
   }
 };
 
+export const validateExclusive = (exclusive: boolean) => {
+  if (typeof exclusive !== "boolean") {
+    throw new Error(EXCLUSIVE_MUST_BE_A_BOOLEAN);
+  }
+};
+
 export const validateQuantity = (quantity: number) => {
   if (typeof quantity !== "number") {
     throw new Error(QUANTITY_MUST_BE_A_NUMBER);
   }
 };
 
-export const validateExclusive = (exclusive: boolean) => {
-  if (typeof exclusive !== "boolean") {
-    throw new Error(EXCLUSIVE_MUST_BE_A_BOOLEAN);
-  }
+export const validateResult = (): never => {
+  throw new Error(FAILED_TO_SELECT_A_WEIGHTED_ITEM);
 };
 
 export const validateItems = <T>(items: T[]) => {

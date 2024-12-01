@@ -1,7 +1,6 @@
 import seedrandom from "seedrandom";
 import { PickManyOptions, PickOneOptions, PickOptions, TableOptions, WeightedItem, WeightedTable } from "./types";
-import { validateExclusive, validateQuantity, validateSeed, validateWeightedItems } from "./validation";
-import { FAILED_TO_SELECT_A_WEIGHTED_ITEM } from "./errors";
+import { validateExclusive, validateQuantity, validateResult, validateSeed, validateWeightedItems } from "./validation";
 
 export const createWeightedTable = <T>(
   weightedItems: WeightedItem<T>[],
@@ -55,7 +54,7 @@ export const createWeightedTable = <T>(
       }
 
       if (!result.length) {
-        throw new Error(FAILED_TO_SELECT_A_WEIGHTED_ITEM); // should never happen
+        validateResult();
       }
 
       return result;
@@ -69,7 +68,7 @@ export const createWeightedTable = <T>(
       }
     }
 
-    throw new Error(FAILED_TO_SELECT_A_WEIGHTED_ITEM); // should never happen
+    validateResult();
   }
 
   return {
